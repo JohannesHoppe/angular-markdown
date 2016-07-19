@@ -8,10 +8,21 @@
   {{#unless environment.production}}
   <script src="/ember-cli-live-reload.js" type="text/javascript"></script>
   {{/unless}}
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
+
+  {{#unless environment.production}}
+  <link href="vendor/roboto-fontface/css/roboto/roboto-fontface.css" rel="stylesheet">
   <link href="vendor/material-design-icons/iconfont/material-icons.css" rel="stylesheet">
+  {{/unless}}
+
+
+  {{#if environment.production}}
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  {{/if}}
+
 </head>
 <body>
   <app-root>Loading...</app-root>

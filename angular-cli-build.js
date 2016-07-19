@@ -17,6 +17,8 @@ module.exports = function(defaults) {
       'rxjs/**/*.+(js|js.map)',
       '@angular/**/*.+(js|js.map)',
       '@angular2-material/**/*',
+      'roboto-fontface/css/roboto/**/*.+(css)',
+      'roboto-fontface/fonts/**',
       'material-design-icons/iconfont/*',
       'marked/lib/*'
     ]
