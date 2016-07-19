@@ -34,6 +34,7 @@ const barrels: string[] = [
   // App specific barrels.
   'app',
   'app/shared',
+  'app/material-test',
   /** @cli-barrel */
 ];
 
@@ -41,6 +42,30 @@ const cliSystemConfigPackages: any = {};
 barrels.forEach((barrelName: string) => {
   cliSystemConfigPackages[barrelName] = { main: 'index' };
 });
+
+const materialPkgs: string[] = [
+    'button',
+    'card',
+    'checkbox',
+    'core',
+    'grid-list',
+    'icon',
+    'input',
+    'list',
+    'menu',
+    'progress-bar',
+    'progress-circle',
+    'radio',
+    'sidenav',
+    'slide-toggle',
+    'tabs',
+    'toolbar'
+];
+
+materialPkgs.forEach((pkg) => {
+  cliSystemConfigPackages[`@angular2-material/${pkg}`] = { format: 'cjs', defaultExtenstion: 'js', main: `${pkg}.js`};
+});
+
 
 /** Type declaration for ambient System. */
 declare var System: any;
@@ -50,7 +75,8 @@ System.config({
   map: {
     '@angular': 'vendor/@angular',
     'rxjs': 'vendor/rxjs',
-    'main': 'main.js'
+    'main': 'main.js',
+    '@angular2-material': 'vendor/@angular2-material'
   },
   packages: cliSystemConfigPackages
 });
