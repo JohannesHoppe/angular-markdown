@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
+
 import { MaterialTest2Component } from './material-test';
 import { HeaderComponent } from './header';
 
@@ -7,7 +9,7 @@ import { HeaderComponent } from './header';
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
-  directives: [HeaderComponent, MaterialTest2Component]
+  directives: [ROUTER_DIRECTIVES, HeaderComponent, MaterialTest2Component]
 })
 export class AppComponent {
 
