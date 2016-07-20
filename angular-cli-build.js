@@ -17,6 +17,7 @@ module.exports = function(defaults) {
       'rxjs/**/*.+(js|js.map)',
       '@angular/**/*.+(js|js.map)',
       '@angular2-material/**/*',
+      'ng2-material/**/*.*', // extra library, used only for the extra CSS (for now)
       'roboto-fontface/css/roboto/**/*.+(css)',
       'roboto-fontface/fonts/**',
       'material-design-icons/iconfont/*',
