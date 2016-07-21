@@ -79,7 +79,7 @@ System.config({
     'rxjs': 'vendor/rxjs',
     'main': 'main.js',
     '@angular2-material': 'vendor/@angular2-material',
-    'marked': 'vendor/marked'
+    'marked': 'vendor/marked/lib/marked.js'
   },
   packages: cliSystemConfigPackages
 });
