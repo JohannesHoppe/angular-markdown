@@ -5,9 +5,12 @@
 /* global require, module */
 
 var Angular2App = require('angular-cli/lib/broccoli/angular2-app');
+var Funnel = require('angular-cli/node_modules/broccoli-funnel');
+var mergeTrees = require('angular-cli/node_modules/broccoli-merge-trees');
 
 module.exports = function(defaults) {
-  return new Angular2App(defaults, {
+  
+  var app = new Angular2App(defaults, {
     vendorNpmFiles: [
       'systemjs/dist/system-polyfills.js',
       'systemjs/dist/system.src.js',
@@ -23,5 +26,12 @@ module.exports = function(defaults) {
       'material-design-icons/iconfont/*',
       'marked/lib/*'
     ]
+  });console.log(__dirname + '/src')
+
+  var markdownTree = new Funnel(__dirname + '/src', {
+    include: ['*.md'],
+    destDir: './'
   });
+
+  return mergeTrees([app, markdownTree], { overwrite: true });
 };
