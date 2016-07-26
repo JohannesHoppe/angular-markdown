@@ -5,7 +5,7 @@ import { HTTP_PROVIDERS } from '@angular/http';
 import { AppComponent, environment } from './app/';
 import { RouterConfig, provideRouter } from '@angular/router';
 
-import { HelloComponent } from './app/hello/';
+import { SitesComponent } from './app/sites/';
 import { MaterialTest2Component } from './app/material-test/';
 
 
@@ -14,8 +14,9 @@ if (environment.production) {
 }
 
 const AppRoutes: RouterConfig = [
-  { path: '', component: HelloComponent },
-  { path: 'md-test2', component: MaterialTest2Component }
+  { path: 'md-test2', component: MaterialTest2Component },
+  { path: ':i1/:i2', component: SitesComponent },
+  { path: '**', component: SitesComponent },
 ];
 
 bootstrap(AppComponent, [

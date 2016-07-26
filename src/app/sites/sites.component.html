@@ -1,0 +1,20 @@
+Slides:
+
+<ul>
+  <li *ngFor="let stackEl of stack; let i1 = index" style="display: block; width: 100px; float:left; }">
+
+    <ul>
+      <li *ngFor="let stackElEl of stackEl; let i2 = index">
+
+        <a [routerLink]="['', i1, i2]" >{{i1}} / {{i2}}</a>
+      </li>
+    </ul>
+
+  </li>
+</ul>
+
+<br style="clear:both">
+
+<md-card>
+  <app-raw-html [html]="content"></app-raw-html>
+</md-card>
