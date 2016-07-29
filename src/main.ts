@@ -15,7 +15,7 @@ if (environment.production) {
 
 const AppRoutes: RouterConfig = [
   { path: 'md-test2', component: MaterialTest2Component },
-  { path: ':i1/:i2', component: SitesComponent },
+  { path: ':horizontalSite/:verticalSite', component: SitesComponent },
   { path: '**', component: SitesComponent },
 ];
 

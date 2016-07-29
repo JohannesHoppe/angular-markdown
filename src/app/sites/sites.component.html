@@ -6,7 +6,7 @@ Slides:
     <ul>
       <li *ngFor="let stackElEl of stackEl; let i2 = index">
 
-        <a [routerLink]="['', i1, i2]" >{{i1}} / {{i2}}</a>
+        <a [routerLink]="['', i1 + 1, i2 + 1]" >{{i1  + 1}} / {{i2 + 1}}</a>
       </li>
     </ul>
 
@@ -16,5 +16,5 @@ Slides:
 <br style="clear:both">
 
 <md-card>
-  <app-raw-html [html]="content"></app-raw-html>
+  <app-raw-html [html]="current.parsedContent"></app-raw-html>
 </md-card>

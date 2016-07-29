@@ -32,6 +32,6 @@ Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla conse
 
 
 
-# 3rdd slide!
+# 3rd slide!
 Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. 
 

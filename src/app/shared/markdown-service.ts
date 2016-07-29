@@ -6,11 +6,27 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+import { Site } from './';
 
 /**
- * Proof of concept
- * 
  * Reads markdown files and parses it using marked
+ *
+ * Splits raw markdown into a matrix of horizontal and vertical markdown sites,
+ * very much inspired by reveal.js
+ * 
+ * Example: 
+ *    
+ *    Site 1/1
+ *    -- smallSeparator --
+ *    Site 1/2
+ *    -- smallSeparator --
+ *    Site 1/3
+ *    -- bigSeperator --
+ *    Site 2/1
+ *    -- smallSeparator --
+ *    Site 2/2
+ *    -- smallSeparator --
+ *    Site 2/3
  * 
  * @export
  * @class MarkdownService
@@ -18,88 +34,87 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class MarkdownService {
 
-    private slideSeparator             = '^\\n{8}'; // 8x completely empty lines --> new horizontal / slide right side
-    private slideSeparatorVertical     = '^\\n{4}';  // 4x completely empty lines --> new vertical / slide down
-    private handsonSeparator           = 'handsOn:';
-    private elementAttributesSeparator = '\\\.element\\\s*?(.+?)$';
-    private slideAttributesSeparator   = '\\\.slide:\\\s*?(\\\S.+?)$';
+    private bigSeperator = '^\\n{8}'; // 8x completely empty lines --> new horizontal
+    private smallSeparator = '^\\n{4}';  // 4x completely empty lines --> new vertical
 
-    private parsedMarkdown: Observable<string[][]>;
+    // TODO: private handsonSeparator = 'handsOn:';
+    // TODO: private elementAttributesSeparator = '\\\.element\\\s*?(.+?)$';
+    // TODO: private slideAttributesSeparator = '\\\.slide:\\\s*?(\\\S.+?)$';
 
-    constructor(private http: Http) {
-        this.parsedMarkdown = this.http
-            .get('test.md')
-            .map(response => response.text())
-            .map(rawMarkdown => this.splitIntoMatrix(rawMarkdown));
-    }
+    private parsedMarkdown: Observable<Site[][]>;
 
-    public getMarkdown(): Observable<string[][]> {
+    constructor(private http: Http) { }
+
+    public getSites(): Observable<Site[][]> {
+
+        if (!this.parsedMarkdown) {
+
+            this.parsedMarkdown = this.http
+                .get('test.md')
+                .map(response => response.text())
+                .map(rawMarkdown => this.splitIntoStack(rawMarkdown))
+                .map(stackedRawMarkdown => stackedRawMarkdown
+                    .map(markdowns => markdowns
+                        .map(markdown => this.parseMarkdown(markdown))));
+        }
+
         return this.parsedMarkdown;
     }
 
-
-    // WTF??
     /**
-     * splits raw markdown into a matrix of horizontal and vertical markdown files
+     * splits raw markdown into a matrix of horizontal and vertical markdown sites
      * 1st level: horizontal
      * 2nd level: vertical
      * 
-     * @param {string} markdown
-     * @returns seperated markdown
+     * @param {string} raw Markdown
+     * @returns splitted, still unparsed rawMarkdown
      */
-    private splitIntoMatrix(markdown: string): string[][] {
+    private splitIntoStack(rawMarkdown: string): string[][] {
+
+        let bothSeperatorRegex = new RegExp(this.bigSeperator + '|' + this.smallSeparator, 'mg'),
+            bigSeparatorRegex = new RegExp(this.bigSeperator),
+            matches: RegExpExecArray,
+            lastIndex = 0,
+            wasBigBreak = true,
+            stackedRawMarkdown: string[][] = new Array<Array<string>>();
 
         // unify to unix LF
-        markdown = markdown.replace(/(\r\n|\r)/g, '\n');
-
-        let separatorRegex = new RegExp(this.slideSeparator +  '|' + this.slideSeparatorVertical, 'mg'),
-            horizontalSeparatorRegex = new RegExp(this.slideSeparator);
-
-        let matches: RegExpExecArray,
-            lastIndex = 0,
-            isHorizontal: boolean,
-            wasHorizontal = true,
-            content: string,
-            stack: string[][] = new Array<Array<string>>();
+        rawMarkdown = rawMarkdown.replace(/(\r\n|\r)/g, '\n');
 
         // iterate until all blocks between separators are stacked up
-        while (matches = separatorRegex.exec(markdown)) {
+        while (matches = bothSeperatorRegex.exec(rawMarkdown)) {
 
             // determine direction (horizontal by default)
-            isHorizontal = horizontalSeparatorRegex.test(matches[0]);
+            let isBigBreak: boolean = bigSeparatorRegex.test(matches[0]);
 
             // create vertical stack
-            if (!isHorizontal && wasHorizontal) {
-                stack.push([]);
+            if (!isBigBreak && wasBigBreak) {
+                stackedRawMarkdown.push([]);
             }
 
-            // pluck slide content from markdown input
-            content = markdown.substring(lastIndex, matches.index);
-            content = this.splitHandsOn(content);
-            content = marked (content);
+            let rawContent: string = rawMarkdown.substring(lastIndex, matches.index);
 
-            if (isHorizontal && wasHorizontal ) {
-                // add to horizontal stack
-                stack[stack.length].push(content);
-            } else {
+            // add to horizontal stack
+            if (isBigBreak && wasBigBreak) {
+                stackedRawMarkdown[stackedRawMarkdown.length].push(rawContent);
                 // add to vertical stack
-                stack[stack.length - 1].push(content);
+            } else {
+                stackedRawMarkdown[stackedRawMarkdown.length - 1].push(rawContent);
             }
 
-            lastIndex = separatorRegex.lastIndex;
-            wasHorizontal = isHorizontal;
+            lastIndex = bothSeperatorRegex.lastIndex;
+            wasBigBreak = isBigBreak;
         }
 
-        // add the remaining slide
-        (wasHorizontal ? stack[stack.length] : stack[stack.length - 1]).push( markdown.substring( lastIndex ) );
+        // add the remaining site
+        (wasBigBreak ? stackedRawMarkdown[stackedRawMarkdown.length] : stackedRawMarkdown[stackedRawMarkdown.length - 1])
+            .push(rawMarkdown.substring(lastIndex));
 
-        return stack;
+        return stackedRawMarkdown;
     }
 
-    // TODO!
-    private splitHandsOn(content) {
-
-        return content;
-
+    private parseMarkdown(markdown: string): Site {
+        let parsedContent: string = marked(markdown);
+        return new Site(parsedContent, markdown);
     }
 }

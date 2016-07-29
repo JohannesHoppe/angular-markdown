@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
-import { MarkdownService } from '../shared/markdown-service';
-import { RawHtmlComponent } from '../raw-html';
+
+import { MarkdownService, Site } from '../shared/';
+import { RawHtmlComponent } from '../raw-html/';
 
 @Component({
   moduleId: module.id,
@@ -13,32 +14,39 @@ import { RawHtmlComponent } from '../raw-html';
 })
 export class SitesComponent implements OnInit {
 
-  private stack: string[][];
-  private content: string;
+  private horizontalSite: number = 1;
+  private verticalSite: number = 1;
+  private stack: Site[][];
 
   constructor(private markdownService: MarkdownService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      let i1 = params['i1'];
-      let i2 = params['i2'];
 
-      this.markdownService
-        .getMarkdown()
-        .subscribe((stack: string[][] ) => {
-          this.stack = stack;
-          this.showMarkdown(stack, i1, i2);
-        });
-    });
+    this.markdownService
+      .getSites()
+      .subscribe((stack) => this.stack = stack);
+
+    this.route.params
+      .subscribe((params) => {
+        this.horizontalSite = +params['horizontalSite'];
+        this.verticalSite = +params['verticalSite'];
+      });
   }
 
-  private showMarkdown(stack: string[][], i1: number, i2: number) {
+  get current(): Site {
 
-    if (!i1 && !i2) {
-      this.content = '';
-      return;
+    if (!this.stack) {
+      return new Site('Loading...', '');
     }
 
-    this.content = stack[i1][i2];
+    let i1 = this.horizontalSite - 1;
+    let i2 = this.verticalSite - 1;
+
+    if (!this.stack[i1] ||
+        !this.stack[i1][i2]) {
+      return new Site('<h1>404</h1>', '');
+    }
+
+    return this.stack[i1][i2];
   }
 }
