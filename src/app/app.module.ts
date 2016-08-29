@@ -7,7 +7,6 @@ import { appRouting } from './app.routing';
 
 @NgModule({
   declarations:    [AppComponent],
-  entryComponents: [AppComponent],
   bootstrap:       [AppComponent],
   imports:         [BrowserModule, MarkdownModule, appRouting]
 })
