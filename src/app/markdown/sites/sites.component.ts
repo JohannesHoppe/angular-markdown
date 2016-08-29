@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { MarkdownService, Site } from '../shared/';
-import { RawHtmlComponent } from '../raw-html/';
 
 @Component({
   selector: 'app-sites',
   templateUrl: 'sites.component.html',
-  styleUrls: ['sites.component.css'],
-  directives: [RawHtmlComponent]
+  styleUrls: ['sites.component.css']
 })
 export class SitesComponent implements OnInit {
 
