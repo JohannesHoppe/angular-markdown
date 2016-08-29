@@ -17,7 +17,6 @@ import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
 
 
 @Component({
-  moduleId: module.id,
   selector: 'app-material-test',
   templateUrl: 'material-test.component.html',
   styleUrls: ['material-test.component.css'],

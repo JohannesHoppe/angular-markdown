@@ -15,7 +15,6 @@ import {MD_ICON_DIRECTIVES, MdIconRegistry} from '@angular2-material/icon';
 import {MD_TABS_DIRECTIVES} from '@angular2-material/tabs';
 
 @Component({
-  moduleId: module.id,
   selector: 'app-material-test2',
   templateUrl: 'material-test2.component.html',
   styleUrls: ['material-test2.component.css'],

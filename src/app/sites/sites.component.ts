@@ -5,7 +5,6 @@ import { MarkdownService, Site } from '../shared/';
 import { RawHtmlComponent } from '../raw-html/';
 
 @Component({
-  moduleId: module.id,
   selector: 'app-sites',
   templateUrl: 'sites.component.html',
   styleUrls: ['sites.component.css'],
