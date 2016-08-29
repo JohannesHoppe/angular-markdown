@@ -1,5 +1,6 @@
-/// <reference path="../../../typings/globals/marked/index.d.ts" />
-import * as marked from 'marked';
+//import * as marked from 'marked';
+declare var marked: any;
+
 
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
@@ -13,9 +14,9 @@ import { Site } from './';
  *
  * Splits raw markdown into a matrix of horizontal and vertical markdown sites,
  * very much inspired by reveal.js
- * 
- * Example: 
- *    
+ *
+ * Example:
+ *
  *    Site 1/1
  *    -- smallSeparator --
  *    Site 1/2
@@ -27,7 +28,7 @@ import { Site } from './';
  *    Site 2/2
  *    -- smallSeparator --
  *    Site 2/3
- * 
+ *
  * @export
  * @class MarkdownService
  */
@@ -65,7 +66,7 @@ export class MarkdownService {
      * splits raw markdown into a matrix of horizontal and vertical markdown sites
      * 1st level: horizontal
      * 2nd level: vertical
-     * 
+     *
      * @param {string} raw Markdown
      * @returns splitted, still unparsed rawMarkdown
      */

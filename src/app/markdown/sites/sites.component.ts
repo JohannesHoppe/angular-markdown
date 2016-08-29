@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { MarkdownService, Site } from '../shared/';
 import { RawHtmlComponent } from '../raw-html/';
@@ -8,8 +8,7 @@ import { RawHtmlComponent } from '../raw-html/';
   selector: 'app-sites',
   templateUrl: 'sites.component.html',
   styleUrls: ['sites.component.css'],
-  directives: [ROUTER_DIRECTIVES, RawHtmlComponent],
-  providers: [MarkdownService]
+  directives: [RawHtmlComponent]
 })
 export class SitesComponent implements OnInit {
 

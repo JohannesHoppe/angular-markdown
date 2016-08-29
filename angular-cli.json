@@ -7,7 +7,10 @@
     {
       "main": "src/main.ts",
       "tsconfig": "src/tsconfig.json",
-      "mobile": false
+      "mobile": false,
+      "scripts": [
+        "../node_modules/marked/lib/marked.js"
+      ]
     }
   ],
   "addons": [],
